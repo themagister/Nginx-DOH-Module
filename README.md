@@ -8,6 +8,7 @@ Tested with Nginx 1.16.1 and 1.17.6.
 Instructions for building installing and using Nginx modules can be found at the links below.
 
 dynamic: https://www.nginx.com/resources/wiki/extending/converting/#compiling-dynamic
+
 static: https://www.nginx.com/resources/wiki/extending/compiling/
 
 I have included config files for both dynamic and static modules, copy whichever one you intend to use into your config file.
