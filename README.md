@@ -33,7 +33,7 @@ location /dns-query {
 }
 
 
-set an upstream address of 127.0.2.1, a port of 5353, and a timeout of 2 seconds.
+set an upstream address of 127.0.2.1, a port of 5353, and a timeout of 2 seconds:
 
 location /dns-query {
     doh;
