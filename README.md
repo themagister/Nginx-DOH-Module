@@ -31,15 +31,19 @@ EXAMPLES
 
 simplest use case with upstream DNS server listening on 127.0.0.1 on port 53:
 
+```
 location /dns-query { 
 	doh;
 }
+```
 
 set an upstream address of 127.0.2.1, a port of 5353, and a timeout of 2 seconds:
 
+```
 location /dns-query { 
 	doh;
 	doh_address 127.0.2.1;
 	doh_port 5353;
 	doh_timeout 2;
 }
+```
