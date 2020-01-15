@@ -10,7 +10,7 @@ dynamic: https://www.nginx.com/resources/wiki/extending/converting/#compiling-dy
 
 static: https://www.nginx.com/resources/wiki/extending/compiling/
 
-I have included config files for both dynamic and static modules, copy whichever one you intend to use into your config file.
+I have included a config file for both building as both a dynamic and static module.
 
 This module is only allowed to be used in an http location block.
 
