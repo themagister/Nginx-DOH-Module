@@ -3,9 +3,8 @@ Simple Nginx module for serving DNS-over-HTTPS (DOH) requests.
 CAVEAT EMPTOR: This module is experimental, even though I have been using it successfully with both Firefox and Curl, there may be undiscovered bugs. Zone transfer is currently not officially supported.
 
 Tested with Nginx versions:
-1.16.1 (stable)
 1.18.0 (stable)
-1.17.10 (mainline).
+1.19 (mainline).
 
 Instructions for building installing and using Nginx modules can be found at the links below.
 
