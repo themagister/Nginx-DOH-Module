@@ -4,7 +4,7 @@ CAVEAT EMPTOR: This module is experimental, even though I have been using it suc
 
 Tested with Nginx versions:
 1.18.0 (stable)
-1.19.3 (mainline).
+1.19.4 (mainline).
 
 Instructions for building installing and using Nginx modules can be found at the links below.
 
