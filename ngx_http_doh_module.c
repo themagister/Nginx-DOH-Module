@@ -115,13 +115,7 @@ ngx_http_doh_handler(ngx_http_request_t* r)
     ngx_str_t               coded, query;
     size_t                  len;
     uint16_t                id;
-
-    if (r->headers_in.content_type == NULL || !r->headers_in.content_type->hash
-        || ngx_strcmp(r->headers_in.content_type->value.data,
-                      "application/dns-message") != 0) {
-        return NGX_HTTP_BAD_REQUEST;
-    }
-
+    
 #if (NGX_HTTP_HEADERS)
     if (r->headers_in.accept == NULL || !r->headers_in.accept->hash) {
         ngx_log_error(NGX_LOG_ALERT, r->connection->log, 0, "accept not set");
@@ -130,6 +124,8 @@ ngx_http_doh_handler(ngx_http_request_t* r)
 
     if (ngx_strcmp(r->headers_in.accept->value.data, "application/dns-message")
         != 0 && ngx_strcmp(r->headers_in.accept->value.data, "*/*") != 0) {
+        ngx_log_error(NGX_LOG_ALERT, r->connection->log, 0,
+                      "invalid accept field in header");
         return NGX_HTTP_BAD_REQUEST;
     }
 #endif
@@ -139,6 +135,8 @@ ngx_http_doh_handler(ngx_http_request_t* r)
     {
         if (r->args.len <= NGX_DNS_MIN_SIZE
             || ngx_strncmp((const char *)r->args.data, "dns=", 4) != 0) {
+            ngx_log_error(NGX_LOG_ALERT, r->connection->log, 0,
+                          "HTTP/GET request formatting error");
             return NGX_HTTP_BAD_REQUEST;
         }
 
@@ -201,6 +199,14 @@ ngx_http_doh_handler(ngx_http_request_t* r)
     }
 
     else if (r->method == NGX_HTTP_POST) {
+    	if (r->headers_in.content_type == NULL || !r->headers_in.content_type->hash
+            || ngx_strcmp(r->headers_in.content_type->value.data,
+                          "application/dns-message") != 0) {
+        	ngx_log_error(NGX_LOG_ALERT, r->connection->log, 0, 
+                              "invalid content type");
+        	return NGX_HTTP_BAD_REQUEST;
+    	}
+    	
         rc = ngx_http_read_client_request_body(r, ngx_http_doh_post_handler );
         if (rc >= NGX_HTTP_SPECIAL_RESPONSE) {
             return rc;
