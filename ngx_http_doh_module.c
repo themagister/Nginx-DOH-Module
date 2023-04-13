@@ -398,8 +398,8 @@ ngx_http_doh_read_handler(ngx_event_t* rev)
     ngx_connection_t*   con;
     ngx_http_request_t* r;
     ngx_int_t           rc;
-    ngx_table_elt_t     *cc, **ccp;
-    ssize_t              n;
+    ngx_table_elt_t*    cc;
+    ssize_t             n;
     u_char              cache[NGX_TTL_SIZE];
     uint32_t            min_ttl; 
 
@@ -458,9 +458,9 @@ ngx_http_doh_read_handler(ngx_event_t* rev)
     out.buf = b;
     out.next = NULL;
 
-    ngx_array_init(&r->headers_out.cache_control, r->pool,
-                   1, sizeof(ngx_table_elt_t *));
-    cc = ngx_list_push(&r->headers_out.headers);
+    ngx_list_init(&r->headers_out.headers, r->pool,
+                   1, sizeof(ngx_table_elt_t));
+    cc = (ngx_table_elt_t*)ngx_list_push(&r->headers_out.headers);
     cc->hash = 1;
     ngx_str_set(&cc->key, "Cache-Control");
     rc = ngx_http_doh_minttl(b, &min_ttl);
@@ -474,8 +474,6 @@ ngx_http_doh_read_handler(ngx_event_t* rev)
         cc->value.data = cache;
         cc->value.len = ngx_strlen(cache);
     }
-    ccp = ngx_array_push(&r->headers_out.cache_control);
-    *ccp = cc;
 
     r->headers_out.status = NGX_HTTP_OK;
     r->headers_out.content_length_n = n;
@@ -639,7 +637,7 @@ ngx_http_doh_tcp_read_handler(ngx_event_t* rev)
     ngx_connection_t*   con;
     ngx_http_request_t* r;
     ngx_int_t           rc;
-    ngx_table_elt_t     *cc, **ccp;
+    ngx_table_elt_t*    cc;
     ssize_t             n;
     u_char              cache[NGX_TTL_SIZE], response[NGX_TCP_SIZE];
     uint32_t            min_ttl;
@@ -698,8 +696,8 @@ ngx_http_doh_tcp_read_handler(ngx_event_t* rev)
     out.buf = b;
     out.next = NULL;
 
-    ngx_array_init(&r->headers_out.cache_control, r->pool,
-                   1, sizeof(ngx_table_elt_t *));
+    ngx_list_init(&r->headers_out.headers, r->pool,
+                   1, sizeof(ngx_table_elt_t));
     cc = ngx_list_push(&r->headers_out.headers);
     cc->hash = 1;
     ngx_str_set(&cc->key, "Cache-Control");
@@ -714,8 +712,6 @@ ngx_http_doh_tcp_read_handler(ngx_event_t* rev)
         cc->value.data = cache;
         cc->value.len = ngx_strlen(cache);
     }
-    ccp = ngx_array_push(&r->headers_out.cache_control);
-    *ccp = cc;
 
     r->headers_out.status = NGX_HTTP_OK;
     r->headers_out.content_length_n = n;
